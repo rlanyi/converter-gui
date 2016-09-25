@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>{{ block('menu_videos_convert') }}</h1>
+<div id="convert_status">{{status|raw}}</div>
+<script type="text/javascript">
+setInterval(function () {
+  $.ajax({
+    url: "{{url|raw}}",
+    type: "get",
+     success: function(response) {
+      $("#convert_status").html(response);
+    },
+    error: function(e) {
+      console.log(e);
+    }
+  });
+}, 2000);
+</script>
+{% endblock %}

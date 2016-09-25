@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>{{ block('menu_videos_list') }}</h1>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Filmcím</th>
+                  <th>Cím</th>
+                  <th>Video ID</th>
+                  <th>Playlist ID</th>
+                  <th>Csatorna</th>
+                </tr>
+              </thead>
+              <tbody>
+
+              {% for id, video in videos %}
+                <tr>
+                  <td>{{video.filmcim}} ({{video.sorszam}})</td>
+                  <td>{{video.dal}}</td>
+                  <td>{{id}}</td>
+                  <td>{{video.youtube_playlist_id}}</td>
+                  <td>{{video.youtube_channel}}</td>
+                </tr>
+              {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+{% endblock %}
