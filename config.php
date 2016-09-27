@@ -2,6 +2,7 @@
 
 $config['displayErrorDetails'] = true;
 $config['addContentLengthHeader'] = false;
+$config['debug'] = false;
 
 $config['db']['host']   = "localhost";
 $config['db']['user']   = "a38tv";

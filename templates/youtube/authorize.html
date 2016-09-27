@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <h1>Authorization Required</h1>
-    <p>You need to <a href="{{authUrl}}">authorize access</a> before proceeding.<p>
+    <h1>Azonosítás szükséges</h1>
+    <p>Az azonosításhoz kattints <a href="{{authUrl}}">ide</a>, a csatornák közül válaszd az <strong>{{ block("menu_youtube_meta_update_#{channel}") }}</strong> csatornát!<p>
 {% endblock %}

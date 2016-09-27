@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>{{ block("menu_youtube_meta_update_#{channel}") }} meták frissítése</h1>
+
+{% if submit is empty %}
+<a href="{{ path_for('youtube-meta-update', { 'channel': channel, 'submit': 'submit' }) }}" class="btn btn-primary start" id="btnStartUpdate" data-loading-text="<span class='fa fa-spinner fa-spin'></span> Frissítés folyamatban...">
+  <span>Meták frissítése</span>
+</a>
+{% endif %}
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Video meta</th>
+                  <th>Video ID</th>
+                  <th>Állapot</th>
+                </tr>
+              </thead>
+              <tbody>
+
+              {% for id, video in videos %}
+                <tr>
+                  <td>
+                    {{video.snippet.title}}
+                    <span data-toggle="collapse" data-target="#id-{{id}}" class="accordion-toggle glyphicon glyphicon-list-alt" aria-hidden="true" style="cursor: pointer;"></span>
+                  </td>
+                  <td>{{id}}</td>
+                  <td>{{video.result}}</td>
+                </tr>
+                <tr class="hiddenrow">
+                  <td colspan="3">
+                    <div id="id-{{id}}" class="accordian-body collapse">
+                      <table class="table table-striped">
+                        <tbody>
+                          <tr>
+                            <th>Title EN</th>
+                            <td>{{video.snippet.title}}</td>
+                          </tr>
+                          <tr>
+                            <th>Description EN</th>
+                            <td>{{video.snippet.description | nl2br}}</td>
+                          </tr>
+                          <tr>
+                            <th>Title HU</th>
+                            <td>{{video.localizations.hu.title}}</td>
+                          </tr>
+                          <tr>
+                            <th>Description HU</th>
+                            <td>{{video.localizations.hu.description | nl2br}}</td>
+                          </tr>
+                          <tr>
+                            <th>Tags HU/EN</th>
+                            <td>{{video.snippet.tags | join(', ')}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+{% endblock %}

@@ -11,6 +11,7 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
     <link href="/admin/assets/css/dashboard.css" rel="stylesheet">
@@ -50,7 +51,14 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li><a href="{{ path_for('videos-convert') }}">{% block menu_videos_convert %}Konvertálás{% endblock %}</a></li>
-            <li><a href="{{ path_for('youtube-meta-update') }}">{% block menu_youtube_meta_update %}Video meták frissítése{% endblock %}</a></li>
+            <li><a href="#">Video meták frissítése</a>
+              <ul>
+                <li><a href="{{ path_for('youtube-meta-update', { 'channel': 'rocks' }) }}">{% block menu_youtube_meta_update_rocks %}A38 Rocks{% endblock %}</a></li>
+                <li><a href="{{ path_for('youtube-meta-update', { 'channel': 'vibes' }) }}">{% block menu_youtube_meta_update_vibes %}A38 Vibes{% endblock %}</a></li>
+                <li><a href="{{ path_for('youtube-meta-update', { 'channel': 'world' }) }}">{% block menu_youtube_meta_update_world %}A38 World{% endblock %}</a></li>
+                <li><a href="{{ path_for('youtube-meta-update', { 'channel': 'free' }) }}">{% block menu_youtube_meta_update_free %}A38 Free{% endblock %}</a></li>
+              </ul>
+            </li>
             <li><a href="{{ path_for('videos-list') }}">{% block menu_videos_list %}Video ID lista{% endblock %}</a></li>
 {#
             <li class="active"><a href="#">Video ID lista <span class="sr-only">(aktív)</span></a></li>
@@ -237,5 +245,6 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="/admin/assets/js/ytadmin.js"></script>
   </body>
 </html>

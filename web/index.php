@@ -1,14 +1,20 @@
 <?php
 
 session_cache_limiter(false);
+session_name('_ytadmin_session');
+ini_set('session.cookie_lifetime', 60 * 60 * 24 * 365);
+ini_set('session.gc_maxlifetime', 60 * 60 * 24 * 365);
 session_start();
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+use Tracy\Debugger;
 
 require '../vendor/autoload.php';
 spl_autoload_register(function ($classname) {
-	require ("../lib/" . $classname . ".php");
+	if (file_exists("../lib/" . $classname . ".php")) {
+		require ("../lib/" . $classname . ".php");
+	}
 });
 
 require('../config.php');
@@ -16,9 +22,10 @@ require('../config.php');
 $app = new \Slim\App(['settings' => $config]);
 $container = $app->getContainer();
 
-//unset($app->getContainer()['errorHandler']);
-//use Tracy\Debugger;
-//Debugger::enable();
+if ((isset($config['debug'])) && ($config['debug'] === true)) {
+	unset($app->getContainer()['errorHandler']);
+	Debugger::enable();
+}
 
 // Logging
 $container['logger'] = function($c) {
@@ -69,7 +76,7 @@ $app->get('/', function (Request $request, Response $response) {
 $app->get('/videos/list', '\InfoController:listVideos')->setName('videos-list');
 $app->get('/videos/convert', '\InfoController:showConvertStatus')->setName('videos-convert');
 
-$app->get('/youtube/meta/update', '\YoutubeController:updateMeta')->setName('youtube-meta-update');
+$app->get('/youtube/meta/update/{channel}[/{submit:submit}]', '\YoutubeController:updateMeta')->setName('youtube-meta-update');
 $app->get('/youtube/authorize', '\YoutubeController:authorize')->setName('youtube-authorize');
 
 $app->get('/hello/{name}', function (Request $request, Response $response, $args) {
@@ -80,9 +87,6 @@ $app->get('/hello/{name}', function (Request $request, Response $response, $args
 	return $this->view->render($response, 'profile.html', [
 		'name' => $args['name']
 		]);
-
-//	$response->getBody()->write("Hello, $name");
-//	return $response;
 })->setName('profile');
 
 $app->run();

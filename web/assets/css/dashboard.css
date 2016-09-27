@@ -103,3 +103,17 @@ body {
   display: inline-block;
   border-radius: 50%;
 }
+
+ul ul {
+  list-style-type: none;
+}
+
+.hiddenrow > td {
+  padding: 0 !important;
+  border-top: none !important;
+}
+
+.hiddenrow table {
+  margin: 20px auto;
+  width: 90%;
+}
