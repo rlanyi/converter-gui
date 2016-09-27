@@ -4,7 +4,7 @@
 <h1>{{ block("menu_youtube_meta_update_#{channel}") }} meták frissítése</h1>
 
 {% if submit is empty %}
-<a href="{{ path_for('youtube-meta-update', { 'channel': channel, 'submit': 'submit' }) }}" class="btn btn-primary start" id="btnStartUpdate" data-loading-text="<span class='fa fa-spinner fa-spin'></span> Frissítés folyamatban...">
+<a href="{{ path_for('youtube-meta-update', { 'channel': channel, 'submit': 'submit' }) }}" class="btn btn-primary start" id="btnStartUpdate" data-loading-text="<span class='fa fa-spinner fa-spin'></span> Frissítés folyamatban... (Ez több percig is eltarthat)">
   <span>Meták frissítése</span>
 </a>
 {% endif %}

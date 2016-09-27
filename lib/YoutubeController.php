@@ -75,14 +75,14 @@ class YoutubeController {
 	private function getVideoListFromCompass($youtube_channel_id, $update = false) {
 		try {
 			$videos = array();
-			$sql = 'SELECT fsz.youtube_id, f.youtube_playlist_id, f.youtube_channel, f.cim filmcim, f.gyartas_eve, 
+			$sql = 'SELECT fsz.youtube_id, f.youtube_playlist_id, f.youtube_channel, IF(f.youtube_title_hu<>"", f.youtube_title_hu, f.cim) filmcim_hu, IF(f.youtube_title_en<>"", f.youtube_title_en, f.cim) filmcim_en, f.gyartas_eve, 
 			(SELECT YEAR(datum) FROM programok p WHERE p.id=pf.program) ev,
 			pfsz.cim dal, pfsz.zeneszerzo, pfsz.szovegiro, pfsz.fellepok
 			FROM programok_fellepok_szamok pfsz
 			INNER JOIN programok_fellepok pf ON (pfsz.programok_fellepo=pf.id) 
 			INNER JOIN filmek_szamok fsz ON (fsz.program=pf.program AND fsz.fellepo=pf.fellepo AND fsz.programok_fellepok_szamok_sorszam=pfsz.sorszam) 
 			INNER JOIN filmek f ON (fsz.film=f.id) 
-			WHERE youtube_id<>"" AND youtube_channel="'.$youtube_channel_id.'" ORDER BY filmcim, fsz.sorszam';
+			WHERE youtube_id<>"" AND youtube_channel="'.$youtube_channel_id.'" ORDER BY f.cim, fsz.sorszam';
 
 			foreach ($this->db->query($sql) as $row) {
       			// Data from query result
@@ -191,8 +191,8 @@ class YoutubeController {
 
 	private function prepareTemplates() {
 		$this->templates = array();
-		$this->templates['title']['hu'] = '[filmcim] - [dal] // Live [ev] // [channelTitle]'; 
-		$this->templates['description']['hu'] = "Az [channelTitle] [evben] rögzített, a [filmcim] koncertjén előadott [dal] című dal felvétele. Nézd meg a koncert további dalait is: [playlistLink]
+		$this->templates['title']['hu'] = '[filmcim_hu] - [dal] // Live [ev] // [channelTitle]'; 
+		$this->templates['description']['hu'] = "Az [channelTitle] [evben] rögzített, a [filmcim_hu] koncertjén előadott [dal] című dal felvétele. Nézd meg a koncert további dalait is: [playlistLink]
 
 [channelText] Iratkozz fel a csatornára: [channelLink]
 
@@ -202,8 +202,8 @@ https://www.facebook.com/a38.hajo
 https://www.youtube.com/user/A38Captain
 https://www.instagram.com/a38ship/
 "; 
-		$this->templates['title']['en'] = '[filmcim] - [dal] // Live [ev] // [channelTitle]'; 
-		$this->templates['description']['en'] = 'In [ev] [channelTitle] recorded the live concert footage of this song called [dal] performed by [filmcim]. Watch the full concert here: [playlistLink]
+		$this->templates['title']['en'] = '[filmcim_en] - [dal] // Live [ev] // [channelTitle]'; 
+		$this->templates['description']['en'] = 'In [ev] [channelTitle] recorded the live concert footage of this song called [dal] performed by [filmcim_en]. Watch the full concert here: [playlistLink]
 
 [channelText] Subscribe to this channel: [channelLink]
 
@@ -214,10 +214,10 @@ https://www.youtube.com/user/A38Captain
 https://www.instagram.com/a38ship/
 ';
 
-		$this->templates['tags'][$this->channels['rocks']] = array('[filmcim]', '[dal]', '[ev]', '[channelTitle]', 'hardcore', 'metal', 'punk', 'rock', 'A38 hajó', 'kultúra', 'zene', 'koncert', 'rendezvény', 'élő koncert', 'élőzene', 'koncertterem', 'művészet', 'előadóművészet', 'szórakoztatás', 'Budapest', 'Duna', 'A38 Ship', 'live concert', 'live music', 'music', 'event', 'concert hall', 'music venue', 'Budapest', 'Hungary', 'art', 'performing art', 'performance', 'culture', 'art centre', 'entertainment', 'Danube');
-		$this->templates['tags'][$this->channels['vibes']] = array('[filmcim]', '[dal]', '[ev]', '[channelTitle]', 'pop', 'indie', 'elektornika', 'rock', 'mainstream', 'dance', 'A38 hajó', 'kultúra', 'zene', 'koncert', 'rendezvény', 'élő koncert', 'élőzene', 'koncertterem', 'művészet', 'előadóművészet', 'szórakoztatás', 'Budapest', 'Duna', 'A38 Ship', 'live concert', 'live music', 'music', 'event', 'concert hall', 'music venue', 'Budapest', 'Hungary', 'art', 'performing art', 'performance', 'culture', 'art centre', 'entertainment', 'Danube');
-		$this->templates['tags'][$this->channels['world']] = array('[filmcim]', '[dal]', '[ev]', '[channelTitle]', 'világzene', 'folk', 'népzene', 'reggae', 'dub', 'ska', 'afro', 'latin', 'world music', 'folk music', 'A38 hajó', 'kultúra', 'zene', 'koncert', 'rendezvény', 'élő koncert', 'élőzene', 'koncertterem', 'művészet', 'előadóművészet', 'szórakoztatás', 'Budapest', 'Duna', 'A38 Ship', 'live concert', 'live music', 'music', 'event', 'concert hall', 'music venue', 'Budapest', 'Hungary', 'art', 'performing art', 'performance', 'culture', 'art centre', 'entertainment', 'Danube');
-		$this->templates['tags'][$this->channels['free']] = array('[filmcim]', '[dal]', '[ev]', '[channelTitle]', 'free', 'jazz', 'kísérleti zene', 'avantgard', 'experimental', 'A38 hajó', 'kultúra', 'zene', 'koncert', 'rendezvény', 'élő koncert', 'élőzene', 'koncertterem', 'művészet', 'előadóművészet', 'szórakoztatás', 'Budapest', 'Duna', 'A38 Ship', 'live concert', 'live music', 'music', 'event', 'concert hall', 'music venue', 'Budapest', 'Hungary', 'art', 'performing art', 'performance', 'culture', 'art centre', 'entertainment', 'Danube');
+		$this->templates['tags'][$this->channels['rocks']] = array('[filmcim_hu]', '[dal]', '[ev]', '[channelTitle]', 'hardcore', 'metal', 'punk', 'rock', 'A38 hajó', 'kultúra', 'zene', 'koncert', 'rendezvény', 'élő koncert', 'élőzene', 'koncertterem', 'művészet', 'előadóművészet', 'szórakoztatás', 'Budapest', 'Duna', 'A38 Ship', 'live concert', 'live music', 'music', 'event', 'concert hall', 'music venue', 'Budapest', 'Hungary', 'art', 'performing art', 'performance', 'culture', 'art centre', 'entertainment', 'Danube');
+		$this->templates['tags'][$this->channels['vibes']] = array('[filmcim_hu]', '[dal]', '[ev]', '[channelTitle]', 'pop', 'indie', 'elektornika', 'rock', 'mainstream', 'dance', 'A38 hajó', 'kultúra', 'zene', 'koncert', 'rendezvény', 'élő koncert', 'élőzene', 'koncertterem', 'művészet', 'előadóművészet', 'szórakoztatás', 'Budapest', 'Duna', 'A38 Ship', 'live concert', 'live music', 'music', 'event', 'concert hall', 'music venue', 'Budapest', 'Hungary', 'art', 'performing art', 'performance', 'culture', 'art centre', 'entertainment', 'Danube');
+		$this->templates['tags'][$this->channels['world']] = array('[filmcim_hu]', '[dal]', '[ev]', '[channelTitle]', 'világzene', 'folk', 'népzene', 'reggae', 'dub', 'ska', 'afro', 'latin', 'world music', 'folk music', 'A38 hajó', 'kultúra', 'zene', 'koncert', 'rendezvény', 'élő koncert', 'élőzene', 'koncertterem', 'művészet', 'előadóművészet', 'szórakoztatás', 'Budapest', 'Duna', 'A38 Ship', 'live concert', 'live music', 'music', 'event', 'concert hall', 'music venue', 'Budapest', 'Hungary', 'art', 'performing art', 'performance', 'culture', 'art centre', 'entertainment', 'Danube');
+		$this->templates['tags'][$this->channels['free']] = array('[filmcim_hu]', '[dal]', '[ev]', '[channelTitle]', 'free', 'jazz', 'kísérleti zene', 'avantgard', 'experimental', 'A38 hajó', 'kultúra', 'zene', 'koncert', 'rendezvény', 'élő koncert', 'élőzene', 'koncertterem', 'művészet', 'előadóművészet', 'szórakoztatás', 'Budapest', 'Duna', 'A38 Ship', 'live concert', 'live music', 'music', 'event', 'concert hall', 'music venue', 'Budapest', 'Hungary', 'art', 'performing art', 'performance', 'culture', 'art centre', 'entertainment', 'Danube');
 
 		$this->templates['channelText_hu'][$this->channels['rocks']]['channelText'] = 'Az elmúlt évtizedben az A38 Hajó a kurrens rockzenei, metal és hardcore-punk hangzások otthonaként is kivívta a rajongók megbecsülését. Büszkén mutatjuk be nektek saját koncertarchívumunk legemlékezetesebb pillanatait a legsúlyosabbtól a legfogósabb dalokig. A38 Rocks – ahol a hangerő megmozgatja a Hajót.';
 		$this->templates['channelText_en'][$this->channels['rocks']]['channelText'] = 'For over a decade, A38 Ship has been the home of great contemporary rock, metal and hardcore acts. We are proud to present the most memorable moments from the biggest shows on – and for sure, in front of – the stage to the catchiest hits of acts.  A38 Rocks – where amps can sound as loud, it shakes the ship.';
