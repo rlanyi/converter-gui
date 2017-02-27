@@ -28,7 +28,7 @@ class InfoController {
 	}
 
 	public function showConvertStatus($request, $response, $args) {
-		$url = 'http://converter.ship.a38.hu/?norefresh&showprogress';
+		$url = 'http://converter.ship.a38.hu/?norefresh&showprogress&noredirect';
 		$status = file_get_contents($url);
 
 		return $this->ci->view->render($response, 'videos/convertStatus.html', [
