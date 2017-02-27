@@ -133,13 +133,13 @@ class YoutubeController {
 
 					$tags = $this->templates['tags'][$youtube_channel_id];
 					foreach ($tags as &$tag) {
-						$tag = YoutubeHelper::replace($tag, array($videoData, $videoSnippet));
+						$tag = YoutubeHelper::removeInvalidChars(YoutubeHelper::replace($tag, array($videoData, $videoSnippet)));
 					}
 					$videoSnippet['tags'] = $tags;
-					$videoSnippet['title'] = YoutubeHelper::shorten(YoutubeHelper::replace($this->templates['title']['en'], array($videoData, $videoSnippet)));
-					$videoSnippet['description'] = YoutubeHelper::replace($this->templates['description']['en'], array($videoData, $videoSnippet, $this->templates['channelText_en'][$youtube_channel_id]));
-					$videoLocalizations['hu']['title'] = YoutubeHelper::shorten(YoutubeHelper::replace($this->templates['title']['hu'], array($videoData, $videoSnippet)));
-					$videoLocalizations['hu']['description'] = YoutubeHelper::replace($this->templates['description']['hu'], array($videoData, $videoSnippet, $this->templates['channelText_hu'][$youtube_channel_id]));
+					$videoSnippet['title'] = YoutubeHelper::shorten(YoutubeHelper::removeInvalidChars(YoutubeHelper::replace($this->templates['title']['en'], array($videoData, $videoSnippet))));
+					$videoSnippet['description'] = YoutubeHelper::removeInvalidChars(YoutubeHelper::replace($this->templates['description']['en'], array($videoData, $videoSnippet, $this->templates['channelText_en'][$youtube_channel_id])));
+					$videoLocalizations['hu']['title'] = YoutubeHelper::shorten(YoutubeHelper::removeInvalidChars(YoutubeHelper::replace($this->templates['title']['hu'], array($videoData, $videoSnippet))));
+					$videoLocalizations['hu']['description'] = YoutubeHelper::removeInvalidChars(YoutubeHelper::replace($this->templates['description']['hu'], array($videoData, $videoSnippet, $this->templates['channelText_hu'][$youtube_channel_id])));
 // lat 47.476489,  long 19.062929, alt 130 m (427 ft).
 
 					$video['snippet'] = $videoSnippet;

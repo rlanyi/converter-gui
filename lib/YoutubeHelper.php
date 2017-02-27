@@ -3,6 +3,8 @@
 class YoutubeHelper {
 	
 	public static function shorten($s, $limit = 100, $separator = '//') {
+		$s = str_replace('<', '', $s);
+		$s = str_replace('>', '', $s);
 		if (strlen($s) > $limit) {
 			if (false !== ($pos = strrpos($s, $separator))) {
 				$s = self::shorten(trim(substr($s, 0, $pos)) . '...', $limit, $separator);
@@ -60,9 +62,20 @@ class YoutubeHelper {
 		$subject = preg_replace_callback('/\b(' . implode( '|', $words) . ')\b/i', function($matches) {
 			return strtolower($matches[1]);
 		}, ucwords(strtolower($subject)));
+
 		$subject = ucfirst($subject);
+
+		// Find words with special chars
+		$subject = preg_replace_callback('~(?=(?:\S*[^\w\s])+)\S+~', function($matches) {
+			return strtoupper($matches[0]);
+		}, $subject);
+
 		return $subject;
 	}
 
-
+	public static function removeInvalidChars($s) {
+		$s = str_replace('<', '', $s);
+		$s = str_replace('>', '', $s);
+		return $s;
+	}
 }
