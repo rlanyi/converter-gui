@@ -3,3 +3,5 @@ cache/*
 logs/*
 *.sublime-*
 config.php
+
+!.gitkeep
