@@ -1,0 +1,13 @@
+<?php
+
+$config['displayErrorDetails'] = true;
+$config['addContentLengthHeader'] = false;
+$config['debug'] = false;
+
+$config['db']['host']   = "localhost";
+$config['db']['user']   = "user";
+$config['db']['pass']   = "password";
+$config['db']['dbname'] = "database";
+
+$config['youtube']['OAUTH2_CLIENT_ID'] = '123456789101-abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com';
+$config['youtube']['OAUTH2_CLIENT_SECRET'] = 'aAbBcCdDeEfFgGhHiIjJkKlL';
