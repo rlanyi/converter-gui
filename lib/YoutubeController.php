@@ -130,6 +130,9 @@ class YoutubeController {
 						$videoLocalizations = array();
 					}
 					$videoSnippet['defaultLanguage'] = 'en';
+					if ($videoSnippet['defaultAudioLanguage'] == "") {
+						$videoSnippet['defaultAudioLanguage'] = "hu-HU";
+					}
 
 					$tags = $this->templates['tags'][$youtube_channel_id];
 					foreach ($tags as &$tag) {
@@ -166,7 +169,8 @@ class YoutubeController {
 					$errorcounter++;
 					$error = json_decode($e->getMessage(), true)['error'];
 					$videos[$videoId]['error'] = true;
-					$videos[$videoId]['result'] = sprintf("Hiba: %s %s", $error['code'], $error['message']);
+					$videos[$videoId]['result'] = sprintf("Hiba: %s %s (%s)", $error['code'], $error['message'], $error['errors'][0]['reason']);
+
 					$htmlBody .= sprintf("<strong>#${counter} Error %s %s: ${videoSnippet["title"]} (id: ${videoId})</strong><br />", $error['code'], $error['message']);
 					continue;
 				}
